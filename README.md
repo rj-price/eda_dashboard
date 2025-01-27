@@ -16,6 +16,10 @@ Initial dashboard can plot barcharts or scatterplots based on any of the column 
 
 ## TO DO
 - Upload button
+- Data types
+- Dataframe size
+- PCA
+- Clustering analysis
 
 ### DONE
 - Missing data

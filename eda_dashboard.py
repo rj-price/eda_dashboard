@@ -2,27 +2,56 @@ import pandas as pd
 import seaborn as sns
 import streamlit as st
 
-file_path = "./assemblies.csv"
+# Set page config
+st.set_page_config(
+    page_title="EDA Dashboard",
+    page_icon="📊"
+)
 
-# Set page title and icon
-st.set_page_config(page_title="EDA Dashboard", page_icon="💾")
+# Title and description
+st.title("📊 EDA Dashboard")
+st.markdown("Interactive dashboard for exploratory data analysis and visualisation.")
+st.markdown("---")
 
-# Title, import data and extract header names
-st.title("EDA Dashboard")
-data = pd.read_csv(file_path, index_col=0)
+# Load data
+@st.cache_data
+def load_data():
+    return pd.read_csv("./assemblies.csv", index_col=0)
+
+data = load_data()
 headers = list(data)
 
-# Show all data on button
-if st.button("Show Data"):
-    st.write(data)
+# Custom CSS to improve appearance
+st.markdown("""
+    <style>
+    .stButton>button {
+        width: 80%;
+        margin: 0 10%; 
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# Show data summary on button
-if st.button("Show Summary"):
-    st.write(data.describe())
-    
-# Show missing data on button
-if st.button("Show Missing"):
-    st.write(data.isna().sum())
+# Create three columns for the buttons
+col1, col2, col3 = st.columns(3, gap="small")
+
+with col1:
+    show_data = st.button("Show Data")
+with col2:
+    show_summary = st.button("Show Summary")
+with col3:
+    show_missing = st.button("Show Missing Values")
+
+# Display data based on button clicks
+if show_data:
+    st.dataframe(data, use_container_width=True)
+if show_summary:
+    st.dataframe(data.describe(), use_container_width=True)
+if show_missing:
+    missing_df = pd.DataFrame({
+        'Missing Values': data.isna().sum(),
+        'Percentage': (data.isna().sum() / len(data) * 100).round(2)
+    })
+    st.dataframe(missing_df, use_container_width=True)
 
 ### NOTE ###
 # If wanting to include additional data on barchart or scatterplot
