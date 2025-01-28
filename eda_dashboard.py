@@ -1,5 +1,5 @@
 import pandas as pd
-import seaborn as sns
+import plotly.express as px
 import streamlit as st
 
 # Set page config
@@ -64,34 +64,57 @@ tab1, tab2, tab3, tab4 = st.tabs(["Correlation Analysis", "Distribution Analysis
 
 ####### Correlation #######
 with tab1:
-    st.write("## Correlation Matrix and Heatmap")
-    if st.button("Show Correlation"):
-        st.dataframe(data.corr(), use_container_width=True)
-        corr_plot = sns.heatmap(data.corr(), annot=True)
-        st.pyplot(corr_plot.get_figure())
+    st.write("## Correlation Analysis")
+    if st.button("Generate Correlation Matrix"):
+        corr_matrix = data.corr()
+        fig = px.imshow(
+            corr_matrix,
+            color_continuous_scale='RdBu',
+            aspect='auto',
+            title='Correlation Matrix'
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
 ####### Histogram #######
 with tab2:
-    st.write("## Histogram")
-    hist_column = st.selectbox("Choose which data to plot as histogram:", headers)
-    if st.button("Plot Histogram"):
-        hist_plot = sns.histplot(data=data, x=hist_column)
-        st.pyplot(hist_plot.get_figure())
+    st.write("## Distribution Analysis")
+    hist_column = st.selectbox("Select variable for histogram:", headers)
+    fig = px.histogram(
+        data,
+        x=hist_column,
+        title=f'Distribution of {hist_column}',
+        template='plotly_white'
+    )
+    st.plotly_chart(fig, use_container_width=True)
 
 ####### Barchart #######
 with tab3:
-    st.write("## Barchart")
-    bar_column = st.selectbox("Choose which data to plot as barchart:", headers)
-    if st.button("Plot Barchart"):
-        st.bar_chart(data[bar_column])
+    st.write("## Bar Charts")
+    bar_column = st.selectbox("Select variable for bar chart:", headers)
+    fig = px.bar(
+        data,
+        y=bar_column,
+        title=f'Bar Chart of {bar_column}',
+        template='plotly_white'
+    )
+    st.plotly_chart(fig, use_container_width=True)
     
 ####### Scatterplot #######
 with tab4:
-    st.write("## Scatterplot")
-    scatter_x = st.selectbox("Choose which data to plot on X axis:", headers)
-    scatter_y = st.selectbox("Choose which data to plot on Y axis:", headers)
-    if st.button("Plot Scatterplot"):
-        st.scatter_chart(data=data, x=scatter_x, y=scatter_y)
+    st.write("## Scatter Plots")
+    col1, col2 = st.columns(2)
+    with col1:
+        scatter_x = st.selectbox("Select X-axis variable:", headers)
+    with col2:
+        scatter_y = st.selectbox("Select Y-axis variable:", headers)
+    fig = px.scatter(
+        data,
+        x=scatter_x,
+        y=scatter_y,
+        title=f'{scatter_y} vs {scatter_x}',
+        template='plotly_white'
+    )
+    st.plotly_chart(fig, use_container_width=True)
     
 
 # Add footer

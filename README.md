@@ -47,6 +47,11 @@ Set up initial dashboard using `assemblies.csv` containing genome assembly metri
 
 Initial dashboard can plot barcharts or scatterplots based on any of the column headers, selected through the dropdown menus.
 
+Include:
+- How to change theme
+- How to download plots
+
+
 <br>
 
 ---
