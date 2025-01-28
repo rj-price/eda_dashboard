@@ -10,15 +10,36 @@ st.set_page_config(
 
 # Title and description
 st.title("📊 EDA Dashboard")
-st.markdown("Interactive dashboard for exploratory data analysis and visualisation.")
-st.markdown("---")
+st.markdown("""
+            <p style="font-size:1.3rem">
+            Interactive dashboard for rapid exploratory data analysis (EDA) and 
+            visualisation of tabular numerical data.</p>
+            """, unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Load data
-@st.cache_data
-def load_data():
-    return pd.read_csv("./assemblies.csv", index_col=0)
+st.write("## Upload Data")
+uploaded_file = st.file_uploader("Upload your CSV file", type=['csv'])
 
-data = load_data()
+@st.cache_data
+def load_data(uploaded_file):
+    return pd.read_csv(uploaded_file, index_col=0)
+
+if uploaded_file is not None:
+    try:
+        data = pd.read_csv(uploaded_file, index_col=0)
+        st.success('File successfully uploaded!')
+    except Exception as e:
+        st.error(f'Error: {e}')
+        st.stop()
+else:
+    try:
+        data = load_data("./assemblies.csv")
+        st.info('Using default dataset. Upload your own CSV file above to analyse different data.')
+    except Exception as e:
+        st.error(f'Error: Could not load default file. Please upload a CSV file.')
+        st.stop()
+        
 headers = list(data)
 
 # Custom CSS to improve appearance
@@ -34,12 +55,9 @@ st.markdown("""
 # Create three columns for the buttons
 col1, col2, col3 = st.columns(3, gap="small")
 
-with col1:
-    show_data = st.button("Show Data")
-with col2:
-    show_summary = st.button("Show Summary")
-with col3:
-    show_missing = st.button("Show Missing Values")
+show_data = col1.button("Show Data")
+show_summary = col2.button("Show Summary")
+show_missing = col3.button("Show Missing Values")
 
 # Display data based on button clicks
 if show_data:
@@ -103,10 +121,8 @@ with tab3:
 with tab4:
     st.write("## Scatter Plots")
     col1, col2 = st.columns(2)
-    with col1:
-        scatter_x = st.selectbox("Select X-axis variable:", headers)
-    with col2:
-        scatter_y = st.selectbox("Select Y-axis variable:", headers)
+    scatter_x = col1.selectbox("Select X-axis variable:", headers)
+    scatter_y = col2.selectbox("Select Y-axis variable:", headers)
     fig = px.scatter(
         data,
         x=scatter_x,
@@ -115,7 +131,6 @@ with tab4:
         template='plotly_white'
     )
     st.plotly_chart(fig, use_container_width=True)
-    
 
 # Add footer
 st.markdown("---")
