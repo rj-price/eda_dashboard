@@ -94,7 +94,7 @@ tab1, tab2, tab3, tab4 = st.tabs(["Correlation Analysis", "Distribution Analysis
 with tab1:
     st.write("## Correlation Analysis")
     if st.button("Generate Correlation Matrix"):
-        corr_matrix = data.corr()
+        corr_matrix = data.select_dtypes(exclude='object').corr()
         fig = px.imshow(
             corr_matrix,
             color_continuous_scale='RdBu',
