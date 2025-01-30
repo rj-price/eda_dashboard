@@ -60,8 +60,6 @@ Include:
 
 ## TO DO
 ### Features to add:
-- Data types
-- Dataframe size
+- Heatmap
 - PCA
 - Clustering analysis
-- Heatmap

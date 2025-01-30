@@ -17,6 +17,16 @@ st.markdown("""
             """, unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
+# Custom CSS to improve appearance
+st.markdown("""
+    <style>
+    .stButton>button {
+        width: 80%;
+        margin: 0 10%; 
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Load data
 st.write("## Upload Data")
 uploaded_file = st.file_uploader("Upload your CSV file", type=['csv'])
@@ -42,28 +52,28 @@ else:
         
 headers = list(data)
 
-# Custom CSS to improve appearance
-st.markdown("""
-    <style>
-    .stButton>button {
-        width: 80%;
-        margin: 0 10%; 
-    }
-    </style>
-""", unsafe_allow_html=True)
+# View data
+st.write("## View Data and Summary Metrics")
 
-# Create three columns for the buttons
-col1, col2, col3 = st.columns(3, gap="small")
-
+col1, col2, col3, col4 = st.columns(4, gap="small")
 show_data = col1.button("Show Data")
 show_summary = col2.button("Show Summary")
-show_missing = col3.button("Show Missing Values")
+show_types = col3.button("Show Data Types")
+show_missing = col4.button("Show Missing Values")
 
 # Display data based on button clicks
 if show_data:
     st.dataframe(data, use_container_width=True)
+    col1, col2  = st.columns(2)
+    col1.metric(label="No. of Rows", value=f"{data.shape[0]:,.0f}")
+    col2.metric(label="No. of Columns", value=f"{data.shape[1]:,.0f}")
 if show_summary:
     st.dataframe(data.describe(), use_container_width=True)
+if show_types:
+    data_types = pd.DataFrame({
+        'Data Types': data.dtypes
+    })
+    st.dataframe(data_types, use_container_width=True)
 if show_missing:
     missing_df = pd.DataFrame({
         'Missing Values': data.isna().sum(),
@@ -101,7 +111,7 @@ with tab2:
         data,
         x=hist_column,
         title=f'Distribution of {hist_column}',
-        template='plotly_white'
+        template='seaborn'
     )
     st.plotly_chart(fig, use_container_width=True)
 
@@ -113,7 +123,7 @@ with tab3:
         data,
         y=bar_column,
         title=f'Bar Chart of {bar_column}',
-        template='plotly_white'
+        template='seaborn'
     )
     st.plotly_chart(fig, use_container_width=True)
     
@@ -128,10 +138,11 @@ with tab4:
         x=scatter_x,
         y=scatter_y,
         title=f'{scatter_y} vs {scatter_x}',
-        template='plotly_white'
+        template='seaborn'
     )
     st.plotly_chart(fig, use_container_width=True)
 
 # Add footer
+st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("---")
 st.markdown("<p style='text-align: center; color: grey;'>Built by Jordan Price (2025). Powered by Streamlit</p>", unsafe_allow_html=True)
