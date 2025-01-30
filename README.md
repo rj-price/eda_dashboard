@@ -60,6 +60,6 @@ Include:
 
 ## TO DO
 ### Features to add:
-- Heatmap
 - PCA
 - Clustering analysis
+- Data editing?

@@ -88,7 +88,7 @@ if show_missing:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # Create tabs for different visualizations
-tab1, tab2, tab3, tab4 = st.tabs(["Correlation Analysis", "Distribution Analysis", "Bar Charts", "Scatter Plots"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Correlation Analysis", "Distribution Analysis", "Bar Charts", "Scatter Plots", "Heatmap"])
 
 ####### Correlation #######
 with tab1:
@@ -141,6 +141,33 @@ with tab4:
         template='seaborn'
     )
     st.plotly_chart(fig, use_container_width=True)
+
+####### Heatmap #######
+with tab5:
+    st.markdown("## Heatmap Analysis")
+    selected_columns = st.multiselect(
+        "Select columns for heatmap:",
+        options=headers,
+        default=headers[:4] if len(headers) > 4 else headers
+    )
+    
+    if selected_columns:
+        fig = px.imshow(
+            data[selected_columns],
+            color_continuous_scale='RdBu',
+            aspect='auto',
+            title=f'Heatmap of Selected Variables'
+        )
+        
+        fig.update_layout(
+            xaxis_title="",
+            yaxis_title="",
+            xaxis={'side': 'bottom'}
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.warning("Please select at least one column to generate the heatmap.")
 
 # Add footer
 st.markdown("<br>", unsafe_allow_html=True)
