@@ -3,6 +3,8 @@
 ### Overview
 `eda_dashboard` is a Streamlit dashboard app for rapid exploratory data analysis (EDA) and visualisation of tabular data in `.csv` format.
 
+Access the web app here: https://rj-price-eda-dashboard.streamlit.app/
+
 ### Features
 The app provides the following functionality:
 - Upload and analyse custom CSV files with automatic data type detection
@@ -110,16 +112,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions or feedback, please open an issue on GitHub.
 
 <br>
-
-<br>
-
----
----
-
-<br>
-
-## TO DO
-### Features to add:
-- PCA
-- Clustering analysis
-- Data editing?
