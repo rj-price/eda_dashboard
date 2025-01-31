@@ -172,4 +172,4 @@ with tab5:
 # Add footer
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: grey;'>Built by Jordan Price (2025). Powered by Streamlit</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: grey;'>Copyright (c) 2025 Jordan Price. Powered by Streamlit</p>", unsafe_allow_html=True)
