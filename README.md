@@ -53,7 +53,7 @@ streamlit run eda_dashboard.py
 ### Data Upload
 The dashboard initially loads with example data (`assemblies.csv`) containing genome assembly metrics.
 
-To analyze your own data, click the "Upload your CSV file" button and select any CSV file. The file should have a header row and an index column. Numerical columns will be automatically detected for analysis.
+To analyse your own data, click the "Upload your CSV file" button and select any CSV file. The file should have a header row and an index column. Numerical columns will be automatically detected for analysis.
 
 ### Data Exploration
 The dashboard provides several ways to explore your data:
@@ -83,11 +83,6 @@ The dashboard provides several ways to explore your data:
 - Useful for identifying relationships between variables
 - Zoom and pan to explore specific regions
 
-#### Heatmap
-- Select multiple columns to visualise their relationships
-- Adjust color scale intensity using the slider (*coming soon*)
-- Hover over bars for index and value
-
 #### Exporting Visualisations
 All plots can be exported as PNG files:
 - Hover over any plot
@@ -98,7 +93,6 @@ All plots can be exported as PNG files:
 - Ensure CSV files are properly formatted with headers
 - Numeric data should be clean and consistent
 - Large datasets may take longer to process
-- For optimal visualisation, limit heatmap selection to related variables
 
 <br>
 
