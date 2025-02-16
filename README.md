@@ -83,6 +83,11 @@ The dashboard provides several ways to explore your data:
 - Useful for identifying relationships between variables
 - Zoom and pan to explore specific regions
 
+#### Heatmap
+- Select multiple columns to visualise their relationships
+- Adjust color scale intensity using the slider (*coming soon*)
+- Hover over bars for index and value
+
 #### Exporting Visualisations
 All plots can be exported as PNG files:
 - Hover over any plot
@@ -106,3 +111,15 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions or feedback, please open an issue on GitHub.
 
 <br>
+
+---
+---
+
+## To Do:
+- PCA
+- Clustering analysis
+- Functionalise/modularise
+- Add multiple file type handling
+- Multiple data columns on barcharts & scatterplots
+- Data editing
+- See https://share.streamlit.io/explore?search=Exploratory+data+analysis&sort=most+viewed for ideas
