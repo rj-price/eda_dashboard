@@ -63,7 +63,7 @@ with st.sidebar:
             ### Visualisation Options
             #### Correlation Analysis
             - Generate an interactive correlation matrix of all numeric columns
-            - Uses a red-blue color scale to indicate negative and positive correlations, respectfully
+            - Uses a red-blue colour scale to indicate negative and positive correlations, respectfully
             - Hover over cells to see exact correlation values
 
             #### Distribution Analysis
@@ -80,6 +80,11 @@ with st.sidebar:
             - Select different columns for X and Y axes
             - Useful for identifying relationships between variables
             - Zoom and pan to explore specific regions
+
+            #### Heatmap
+            - Select multiple columns to visualise their relationships
+            - Adjust colour scale intensity using the slider (*coming soon*)
+            - Hover over bars for index and value
 
             #### Exporting Visualisations
             All plots can be exported as PNG files:
@@ -182,12 +187,11 @@ if show_missing:
     })
     st.dataframe(missing_df, use_container_width=True)
 
-
 st.markdown("<br>", unsafe_allow_html=True)
 st.write("## Visualise Data")
 
-# Create tabs for different visualizations
-tab1, tab2, tab3, tab4 = st.tabs(["Correlation Analysis", "Distribution Analysis", "Bar Charts", "Scatter Plots"])
+# Tabs for different visualisations
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Correlation Analysis", "Distribution Analysis", "Bar Charts", "Scatter Plots", "Heatmap"])
 
 ####### Correlation #######
 with tab1:
@@ -241,8 +245,65 @@ with tab4:
     )
     st.plotly_chart(fig, use_container_width=True)
 
+####### Heatmap #######
+with tab5:
+    st.markdown("### Heatmap Analysis")
+    numeric_columns = data.select_dtypes(exclude='object').columns
+    selected_columns = st.multiselect(
+        "Select columns for heatmap:",
+        options=numeric_columns,
+        default=numeric_columns[:4] if len(numeric_columns) > 4 else numeric_columns
+    )
+    
+    if not selected_columns:
+        st.warning("Please select at least one column to generate the heatmap.")
+        
+    max_val = data[selected_columns].max().max()
+    min_val = data[selected_columns].min().min()
+    
+    if min_val >= 0:
+        range_min, range_max = st.slider(
+            "Value Range",
+            min_value=0.0,
+            max_value=float(max_val),
+            value=(float(min_val), float(max_val)),
+            format="%.2f"
+        )
+        
+        fig = px.imshow(
+            data[selected_columns],
+            color_continuous_scale='blues',
+            range_color=[range_min, range_max],
+            aspect='auto',
+            title='Heatmap of Selected Variables'
+        )
+    else:
+        range_min, range_max = st.slider(
+            "Value Range",
+            min_value=float(min_val),
+            max_value=float(max_val),
+            value=(float(min_val), float(max_val)),
+            format="%.2f"
+        )
+        
+        fig = px.imshow(
+            data[selected_columns],
+            color_continuous_scale='RdBu',
+            range_color=[range_min, range_max],
+            color_continuous_midpoint=0,
+            aspect='auto',
+            title='Heatmap of Selected Variables'
+        )
+    
+    fig.update_layout(
+        xaxis_title="",
+        yaxis_title="",
+        xaxis={'side': 'bottom'}
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
 
-# Add footer
+# Footer
 st.markdown("<br>", unsafe_allow_html=True)
 st.markdown("---")
 st.markdown(
